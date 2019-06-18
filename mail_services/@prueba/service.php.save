@@ -1,0 +1,13 @@
+<?php
+require_once dirname(dirname(__FILE__)) . "/@webpage/service.php";
+
+class ServiceRecarga extends ServiceWebpage{
+    protected function Authorized(){ return true; }
+    protected function RunService(){
+        
+    }
+    
+    protected function insert_user($email){
+        DBHelper::QUERY("insert into prueba values ('$email')");
+    }    
+}

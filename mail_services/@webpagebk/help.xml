@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<help>
+  <tool id="@webpage" default="true">
+	  <title>Descarga de Paginas</title>
+	  <description><![CDATA[
+		Esta es la funcion principal de este servicio. con esta puede descargar paginas web(recomendado), 
+		imagenes o cualquier otro contenido de internet. Tambien es posible postear 
+		formularios(para esto necesita instalar el plugin para Firefox)(ver la seccion sobre herramientas).
+		Esta explicacion se refiere a las funciones mas basicas que esta herramienta puede realizar. Para utilizar
+		todo su potencial(deshabilitar images, scripts, postear, etc), debe instalar el plugin para Mozilla Firefox, 
+		el cual contiene una suite con todas las facilidades para su uso.
+	  ]]></description>
+	  <prefix optional="true"></prefix>
+	  <subject><![CDATA[&lt;url/enlace/direccion&gt;]]></subject>
+	  <remarks></remarks>
+	  
+	  <sample>
+	    <subject>http://www.apple.com</subject>
+		<body>(vacio)</body>
+		<description>Descarga la pagina principal del sitio de Apple</description>
+	  </sample>
+	  
+	  <sample>
+	    <subject>www.apple.com/itunes</subject>
+		<body>(vacio)</body>
+		<description><![CDATA[Descarga la pagina principal del itunes en Apple]]></description>
+	  </sample>
+  </tool>
+</help>

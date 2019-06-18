@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<help>
+  <tool id="@client:info">
+	  <title>Ver informacion de su cuenta</title>
+	  <description><![CDATA[
+		Le envia un correo con el estado de su cuenta(si esta activada y cuando vence esta activacion).
+	  ]]></description>
+	  <prefix>@client:info</prefix>
+	  <subject></subject>
+	  <remarks></remarks>
+  </tool>
+  
+  <tool id="@client:activar">
+	  <title>Activar su Cuenta</title>
+	  <description><![CDATA[
+		Esta operacion a&ntilde;ade 30 dias de activacion a su cuenta. Asi es como usted activa su cuenta
+		cuando se le entrega el numero pin. Lea la seccion sobre Precios para mas informacion. Una vez ralizada
+		la operacion de recarga, se le envia un correo con el estado de su cuenta donde puede comprobar la nueva
+		fecha de expiracion de la misma
+	  ]]></description>
+	  <prefix optional="true">@client:activar</prefix>
+	  <subject><![CDATA[&lt;numero pin&gt;]]></subject>
+	  <remarks></remarks>
+	  
+	  <sample>
+	    <subject>@client:activar 1234-1234-1234-1234</subject>
+		<body>(vacio)</body>
+		<description><![CDATA[Si el numero es valido a&ntilde;ade 30 dias de activacion a su cuenta]]></description>
+	  </sample>
+  </tool>
+  
+</help>

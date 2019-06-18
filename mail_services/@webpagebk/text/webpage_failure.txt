@@ -1,0 +1,12 @@
+La descarga de la pagina ha fallado. A continuacion
+se muestra informacion adicional sobre este error:
+
+Default: %s
+Url : %s
+Profundidad : %s
+Asunto de Respuesta : %s
+Selectores Eliminados : %s
+
+La causa mas probable de este error es que no haya 
+solicitado una url valida. Si tiene duda sobre esto
+guarde este mensaje y contactenos para ayudarle.
