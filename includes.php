@@ -16,7 +16,7 @@ ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
 // ERROR_REPORTING
-if (REPORT_ERRORS || $_REQUEST['report_errors']){
+if (REPORT_ERRORS || isset($_REQUEST['report_errors'])){
     ini_set('display_errors', 'On');
     error_reporting(E_ALL ^ E_STRICT);
 }

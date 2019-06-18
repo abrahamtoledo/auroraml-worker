@@ -1,13 +1,15 @@
+<?php
+
 // MYSQL
-define("MYSQL_HOST", "192.168.0.11");
-define("MYSQL_USER", "auroraml");
-define("MYSQL_PASS", "isaburum@1002");
-define("MYSQL_DB", "auroraml");
+define("MYSQL_HOST", "auroraml.com");
+define("MYSQL_USER", "root");
+define("MYSQL_PASS", "isaburuma1002");
+define("MYSQL_DB", "admin_main");
 define("MYSQL_PORT", 3306);
 
 // SMTP
 define("MAIL_IS_SMTP", 1);
-define("SMTP_HOST", "mail.auroraml.net");
+define("SMTP_HOST", "aurora-mail-sender");
 define("SMTP_PORT", 25);
 define("SMTP_AUTH", 0);
 //define("SMTP_USER", "w2m@auroraml.com");

@@ -302,6 +302,8 @@
 			if ($config['SMTP_SSL']){
 				$mail->Host = "ssl://{$mail->Host}";
 			}
+
+			$mail->SMTPAutoTLS = false;
 		}
 		else{
 			$mail->IsMail();
@@ -1035,7 +1037,7 @@
     */
     public static function wrapInBitmap($byteString){
         // Usa resolucion de 32 bits para no tener problemas con el padding del formato 'BMP'
-        // Calcular el tamaño del bitmap y rellenar el espacio sobrante
+        // Calcular el tamaï¿½o del bitmap y rellenar el espacio sobrante
         $byteString = pack( "V", strlen($byteString) ) . $byteString;
         
         $len = strlen($byteString);
@@ -1051,7 +1053,7 @@
         // Crear el header primero
         // Headers de archivo
         $bitmapData = pack("v", "BM");
-        $bitmapData .= pack("V", 54 + $len); // El tamaño del archivo, header + data. len(header)=54
+        $bitmapData .= pack("V", 54 + $len); // El tamaï¿½o del archivo, header + data. len(header)=54
         $bitmapData .= pack("v", 0); //Reservado 
         $bitmapData .= pack("v", 0); // Reservado
         $bitmapData .= pack("V", 54); // Offset of pixel data (54)
