@@ -6,8 +6,6 @@ ignore_user_abort(true);
 define('DOCUMENT_ROOT', dirname(dirname(__FILE__)));
 require_once DOCUMENT_ROOT . '/includes.php';
 
-_debug("Start debug session.");
-
 if (!isset($_GET['num']) && count($argv) <= 1) die("No se especifico un mensaje");
 
 $num = $_GET['num'] ? (int)$_GET['num'] : (int)$argv[1];

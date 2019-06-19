@@ -12,7 +12,7 @@ class CacheManager{
     */
     private $F_MD5="md5";
     /**
-    * @desc El usuario dueño del cache
+    * @desc El usuario dueï¿½o del cache
     */
     private $F_USER="user";
     /**
@@ -67,7 +67,6 @@ class CacheManager{
     */
     protected function __construct($user, $task_image_cuality, $cache_uid = -1, $confirmed_tasks = array()){
         // Debug
-        _debug("CacheManager: Inicializando la tabla");
         $this->initCacheTable();
         
         $this->user = $user;
@@ -81,8 +80,6 @@ class CacheManager{
             
         $this->confirmedTasks = $confirmed_tasks;
         
-        // Debug
-        _debug("CacheManager: Realizando Mantenimiento");
         $this->maintain($confirmed_tasks);
     }
     private function initCacheTable(){
@@ -118,8 +115,6 @@ class CacheManager{
     }
     
     private function maintain($confirmed_tasks){
-        // Debug
-        _debug("CacheManager: Confirmando ". count($confirmed_tasks) ." tareas.");
         // Confirmacion de tareas
         // NOTA : Para optimizar, poner las tareas no confirmadas en una tabla aparte
         // Otra forma de optimizar seria tener varias tablas de cache. O mejor, una para
@@ -136,8 +131,6 @@ class CacheManager{
                  ");
         }
         
-        // Debug
-        _debug("CacheManager: Eliminando elementos obsoletos.");
         // Eliminacion de elementos obsoletos para el usuario actual
         DBHelper::Query(
             "DELETE FROM {$this->CACHE_TABLE} 

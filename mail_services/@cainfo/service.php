@@ -18,10 +18,10 @@ class ServiceCainfo extends ServiceBase{
         $reply->AddFrom($this->msg->to[0]);
         
         if (EPHelper::SendMailMessage($reply, $error)){
-            $this->setComment("[MS]");
+            syslog(LOG_INFO, "Mail Sent to {$reply->to[0]}");
+            
         }else{
-            $this->setComment("[MS FAIL]: $error");
-            _debug("Error al enviar correo: $error");
+            syslog(LOG_ERR, "Error al enviar correo: $error");
         }
 	}
 }

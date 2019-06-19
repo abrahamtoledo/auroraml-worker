@@ -15,25 +15,8 @@ ini_set('display_errors', 'Off');
 // Pero si en php_errors.log
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
-// ERROR_REPORTING
-if (REPORT_ERRORS || isset($_REQUEST['report_errors'])){
-    ini_set('display_errors', 'On');
-    error_reporting(E_ALL ^ E_STRICT);
-}
-
-// DEBUG
-$GLOBALS["debug_started"] = false;
-function _debug($val){
-    if (_DEBUG_ || @$_REQUEST['debug']){
-        
-        $fname = '/var/log/aurora_debug.log';
-        if (!$GLOBALS["debug_started"]){
-            
-        }
-        
-        file_put_contents($fname, date("Y-m-d -- H:i:s.u") . " : $val\n", FILE_APPEND);
-    }
-}
+// Syslog Preparation
+openlog("auroraml-worker", LOG_ODELAY, LOG_LOCAL0);
 
 // Include all files under "common" directory
 foreach(glob(DOCUMENT_ROOT . '/common/*.php') as $common){

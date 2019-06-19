@@ -159,9 +159,8 @@ class webDownload{
 	
 	public function StartDownload(){
 		$logs = Logs::GetInstance();
-        _debug("[Running] Webdownload->StartDownload()");
-        
-        $this->Download(new webFile(array(
+		
+		$this->Download(new webFile(array(
 										'url' => $this->url, 
 										'depth' => $this->depth, 
 										'root' => true,
@@ -193,9 +192,8 @@ class webDownload{
 	// Esta funcion solo puede descargar recursos usando metodo GET
 	protected function DownloadCollection($c_webFile){
 		$logs = Logs::GetInstance();
-        _debug("[Running] Webdownload->DownloadCollection(); Num_URL=" . count($c_webFile));
-        
-        $lrHandlers = array();
+		
+		$lrHandlers = array();
 		foreach($c_webFile as $webFile) {
 			$lrHandlers[] = RequestHandler::CreateInstance($webFile, $this->cookie_file);
 		}
@@ -214,7 +212,6 @@ class webDownload{
 	// Esta funcion solo puede descargar recursos usando metodo GET y POST
 	protected function DownloadSingle($webFile){
 		$logs = Logs::GetInstance();
-        _debug("[Running] Webdownload->DownloadSingle(); URL={$webFile->url}");
         
         if ($webFile->depth < 0) return;
 		
@@ -232,7 +229,6 @@ class webDownload{
     */
 	protected function Digest($webFile, $content_type){
         $logs = Logs::GetInstance();
-        _debug("[Running] Webdownload->Digest(); URL={$webFile->url}");
         
         $this->fileCount++;
         
@@ -267,10 +263,8 @@ class webDownload{
 			case "image/gif":
 			case "image/x-gif":
 			case "image/bmp":
-                _debug("Digest Image : {$webFile->url}");
-				if ($this->ImageCuality < 10){
-                    _debug("Image cuality = {$this->ImageCuality}");
-					$img = @imagecreatefromstring($webFile->content);
+                if ($this->ImageCuality < 10){
+                    $img = @imagecreatefromstring($webFile->content);
 					if ($img !== false){
 					    // Para moviles reducimos tambien la resolucion de la foto
                         if (defined('MOBILE_REQUEST') && MOBILE_REQUEST){
@@ -299,23 +293,19 @@ class webDownload{
                 if (strlen($webFile->content) > 1024 * $this->ImageSizeLimit){
                     $webFile->content = "La imagen supero el limite maximo que usted establecio";
                 }
-                
-                // Debug Memory
-                _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-			default:
+            default:
 				$this->DigestUnknown($webFile);
 				break;
 		}
 	}
     /**
-    * @desc Redimensiona la imagen al tamaño apropiado
+    * @desc Redimensiona la imagen al tamaï¿½o apropiado
     * para el movil
     * 
     * @param Image imagen a redimensionar
     * @return Image imagen redimensionada o null si no fue necesario redimensionar
     */
     private function resizeImageForMobile($img){
-        _debug("Resizing image for mobile");
         $src_x = imagesx($img);
         $src_y = imagesy($img);
         
@@ -327,17 +317,14 @@ class webDownload{
         
         $dest = imagecreatetruecolor($dest_x, $dest_y);
         if (imagecopyresampled($dest, $img, 0, 0, 0, 0, $dest_x, $dest_y, $src_x, $src_y)){
-            _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
             return $dest;
         }else{
             imagedestroy($dest);
-            _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
             return null;
         }
     }
 
 	protected function _digestHTML($webFile, $content_type){
-		_debug("Digesting html file : {$webFile->url}");
 		$this->tryResolveFileName($webFile, "", "html");
 
 		if ($this->is_src) return;
@@ -511,7 +498,7 @@ class webDownload{
       <div class="aurora-modal-container">
         <div class="aurora-modal-header">
             <a href="#closeAuroraModal" title="Close" class="aurora-close-btn">X</a>
-            <h1>Información</h1>
+            <h1>Informaciï¿½n</h1>
         </div>
         <div class="aurora-modal-content">
             {$this->topMessageFullContent}
@@ -649,9 +636,7 @@ HTML;
 		}
 
 		// End (TED)
-		// DEBUG Memory
-		_debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-
+		
 		// Download dependencies before saving the page
 		$this->Download($c_webFile);
 
@@ -751,8 +736,7 @@ HTML;
 	}
 
 	protected function digestHTML($webFile, $content_type){
-		_debug("Digesting html file : {$webFile->url}");
-        $this->tryResolveFileName($webFile, "", "html");
+		$this->tryResolveFileName($webFile, "", "html");
 		
 		if ($this->is_src) return;
 		
@@ -899,7 +883,7 @@ HTML;
       <div class="aurora-modal-container">
         <div class="aurora-modal-header">
             <a href="#closeAuroraModal" title="Close" class="aurora-close-btn">X</a>
-            <h1>Información</h1>
+            <h1>Informaciï¿½n</h1>
         </div>
         <div class="aurora-modal-content">
             {$this->topMessageFullContent}
@@ -1023,20 +1007,6 @@ HTML;
 		
 		// End (TED)
         
-        
-        // Agregar los headers (Catalyst Viejo)
-        //$strDom = $dom->Save(); $dom->clear();
-        //$dom = str_get_html($strDom);
-        //$head = $dom->find("head", 0);
-        //@($head->innertext .= $this->getAuxHeaders());
-        // Fin de los headers
-        
-        // TODO: AQUI PONER LOGICA DE MENSAJE A MOSTRAR CUANDO ESTA POR VENCERSE LA CUENTA.
-        
-		
-        // DEBUG Memory
-		_debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-        
         // Download dependencies before saving the page
 		$this->Download($c_webFile);
 		
@@ -1045,8 +1015,7 @@ HTML;
 		$dom->clear();
 	}
 	protected function digestCSS($webFile){
-		_debug("Digesting CSS : {$webFile->url}");
-        $this->tryResolveFileName($webFile, "", "css");
+		$this->tryResolveFileName($webFile, "", "css");
 		
 		if ($this->is_src) return;
 		
@@ -1061,25 +1030,18 @@ HTML;
 		$callback = new CssImportsCallback($webFile, $this, $c_webFile, $prefix);
 		$webFile->content = preg_replace_callback($regexp, array($callback, "Callback"), $webFile->content);
 		
+		// Get dependecies
 		if (count($c_webFile) > 0) $this->Download($c_webFile);
-
-        // Debug Memory
-        _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-		//$this->saveToArchive($webFile);
 	}
+
 	protected function digestJS($webFile){
-		_debug("Digest JS : {$webFile->url}");
-        $this->tryResolveFileName($webFile, "", "js");
-		//$this->saveToArchive($webFile);
+		$this->tryResolveFileName($webFile, "", "js");
 	}
 	/**
     * @desc procesa un archivo con un formato sin tratamiento especial
     */
     protected function digestUnknown($webFile){
-        _debug("Digest Unknown : {$webFile->url}");
         $this->tryResolveFileName($webFile);
-		//$this->saveToArchive($webFile);
-
 	}
 
 	/******************/
@@ -1101,14 +1063,14 @@ HTML;
 	protected function getAuxHeaders(){
 		$saddr = SERVICE_ADDRESS;
 		$res = <<<HEAD
-<link rel="stylesheet" href="chrome://catalyst/content/css/jquery-ui-1.7.1.custom.css" media="all" />
-<link rel="stylesheet" href="chrome://catalyst/content/css/transforms.css" media="all" />
+		<link rel="stylesheet" href="chrome://catalyst/content/css/jquery-ui-1.7.1.custom.css" media="all" />
+		<link rel="stylesheet" href="chrome://catalyst/content/css/transforms.css" media="all" />
 
-<script type="text/javascript" src="chrome://catalyst/content/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="chrome://catalyst/content/js/jquery-ui-1.7.1.custom.min.js"></script>
-<script type="text/javascript" src="chrome://catalyst/content/js/transforms.js"></script>
+		<script type="text/javascript" src="chrome://catalyst/content/js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="chrome://catalyst/content/js/jquery-ui-1.7.1.custom.min.js"></script>
+		<script type="text/javascript" src="chrome://catalyst/content/js/transforms.js"></script>
 
-<meta name="saddr" content="$saddr"/>
+		<meta name="saddr" content="$saddr"/>
 HEAD;
 	return $res;
 	}

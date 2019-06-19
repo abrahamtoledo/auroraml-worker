@@ -258,7 +258,6 @@
 	public static function SendMailMessage($mailMessage, &$error = "", $config = NULL){
 		$credentials = EPHelper::getRandSmtpAccount();
 		
-		_debug('Enviando mensahje');
 
         if ($config == NULL){
             $config = array(
@@ -363,11 +362,10 @@
 		}
 		
 		if ( $mail->Send() ){
-			_debug("Mail Sent");
 			return true;
 		}else{
 			$error = $mail->ErrorInfo;
-			_debug($error);
+			syslog(LOG_ERR, "$error");
 			return false;
 		}
 	}
@@ -547,16 +545,12 @@
  	public static function GetUrl($url, $timeout = 3, &$transfer_info = NULL, $cookie_file = "", $referer="", &$responseHttpHeaders=null){
  		// DEBUG
         $logs = Logs::GetInstance();
-        /*if (_DEBUG_){
-            $logs->addEntry("[Running] EPHelper::GetURL($url, $timeout, $transfer_info, $cookie_file, $referer, $responseHttpHeaders)");
-        }*/
-		
+        
 		if (strpos($url, "s455335975.onlinehome.us") !== false){
 			$timeout = min($timeout, 3);
 		}
    
-   _debug("GetUrl: {$url}");
-		
+   		
 		$headers = array();
 		$headers[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 		$headers[] = "Referer: " . ( $referer ? $referer : ( (Url::Parse($url)) ? Url::Parse($url)->RemoveParams()->Save() : "http://www.example.com/" ) );
@@ -641,24 +635,21 @@
 			$timeout = min($timeout, 5);
 		}
    
-    _debug(json_encode($pfiles));
 		
 		$headers = array();
 		$headers[] = "Referer: " . ( $referer ? $referer : ( (Url::Parse($url)) ? Url::Parse($url)->RemoveParams()->Save() : "http://www.example.com/" ) );
 		$headers[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 		$headers[] = "Cache-Control: max-age=0";
 		$headers[] = "Connection: close";
-		//$headers[] = "Keep-Alive: 300";
 		$headers[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
 		$headers[] = "Accept-Language: es-es,es;q=0.8,en-us;q=0.5,en;q=0.3";
-		//$headers[] = "Accept-Encoding:";
 		
-    $pvars = array();
-    foreach ($pdata as $key => $val){
-        self::squashPostField($key, $val, $pvars);
-    }
+		$pvars = array();
+		foreach ($pdata as $key => $val){
+			self::squashPostField($key, $val, $pvars);
+		}
     
-    foreach ($pfiles as $key => $val){
+		foreach ($pfiles as $key => $val){
 			$pvars[$key] = new CURLFile($val['tmp_name'], $val['type'], $val['name']);
 		}
         

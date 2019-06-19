@@ -31,32 +31,22 @@ class MessageProcessor{
         $logs->addEntry("Procesando un nuevo mensaje");
         
         if ($this->mailBox->Open()){
-            _debug("Se abrio el buzon con exito");
             $msg = $this->mailBox->Message($this->msgNo);
-            //$this->mailBox->softDelete($this->msgNo);
-            
-            //$this->mailBox->softDelete($this->msgNo);
-            //$this->mailBox->Close(false);
             if (!$msg){
-                $logs->addEntry("Error: Mensaje no existe en: " . __FILE__ . ". line: " . __LINE__);
-                _debug("Error: Mensaje no existe en: " . __FILE__ . ". line: " . __LINE__);
+                syslog(LOG_ERR, "Error: Mensaje no existe en: " . __FILE__ . ". line: " . __LINE__);
                 return;
             }
             
-            _debug("Mensaje leido");
             
             $addr = count($msg->reply_to) ? $msg->reply_to[0] : $msg->from[0];
             if (!EPHelper::is_email_banned($addr->address) && !EPHelper::is_email_banned($msg->to[0])) {
                 $serv = call_user_func($this->createServiceCallback, $msg);
 
                 if ($serv){
-                    _debug("Ejecutando el servicio.");
-                    //$logs->addEntry("Nombre del Servicio: " . get_class($serv));
                     $serv->Run();
                     
                     $logs->AddEntry("\r\n" . $serv->GetLogInfo(1) . "\r\n------------------");
                     
-                    _debug("Marcando mensaje para eliminacion.");
                     $this->mailBox->softDelete($this->msgNo);
                 }else{
                     $logs->addEntry("No se pudo crear el servicio");
@@ -67,11 +57,10 @@ class MessageProcessor{
                             $msg->from[0], $msg->subject));
             }
             
-            _debug("Cerrando el buzon.");
             $this->mailBox->Close(false);
         }
         else{
-            $logs->AddEntry(/*'['.date("d/m/Y - H:i:s").']' .*/ "\r\nIMAP OPENING FAILED ({$this->mailBox->user}): " . $this->mailBox->lastError() . "\r\n");
+            syslog(LOG_ERR, /*'['.date("d/m/Y - H:i:s").']' .*/ "\r\nIMAP OPENING FAILED ({$this->mailBox->user}): " . $this->mailBox->lastError() . "\r\n");
         }
 
     }

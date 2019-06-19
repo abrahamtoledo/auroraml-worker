@@ -93,13 +93,9 @@ abstract class ServiceBase extends ServiceAbstract{
 		    $msg->AddTo( sprintf("%s <%s>", $userName, $this->user) );
         }else{
             $msg->AddTo( $this->user );
-//		if ($this->user == 'nljj@nauta.cu'){
-//			$msg->AddBcc( "abrahamtoledo90@gmail.com" );
-//		}
         }
 	
-	//$subdomain = "mail" . rand(0, 999);
-	$subdomain = $this->senderMailAddres->user;
+        $subdomain = $this->senderMailAddres->user;
 		
         if ($this->data->mobile || 
             !$this->GetRandomSender("mailninja.ml", $fromName, $fromAddress) || 
@@ -116,8 +112,7 @@ abstract class ServiceBase extends ServiceAbstract{
 		$msg->subject = $subject ? $subject : ((string)$this->data->resp_subject ? 
 													(string)$this->data->resp_subject : "{$this->msgSubject}");
 		
-        //$msg->subject = !$this->encrypted ? $msg->subject : "Hola";
-		$msg->body = $msg->altBody = !$this->encrypted ? $body : "";
+        $msg->body = $msg->altBody = !$this->encrypted ? $body : "";
         
         if ($superSecure) $msg->body = $msg->altBody = "";
         
@@ -133,8 +128,6 @@ abstract class ServiceBase extends ServiceAbstract{
             
             if ($superSecure){
                 $data = EPHelper::wrapInBitmap($data);
-                //$name = "DCIM_" . rand(1000, 99999) . ".BMP";
-//                $mime = "image/x-bmp";
                 $name = "DCIM_" . rand(1000, 99999) . "." . ATT_EXTENSION;
                 $mime = "image/" . ATT_EXTENSION;
             }else{
@@ -366,6 +359,7 @@ abstract class ServiceBase extends ServiceAbstract{
     protected static function SymmetricEncrypt($data, $key, $iv){
         return mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, self::ApplyPKCS7Padding($data, self::BLOCK_SIZE), MCRYPT_MODE_CBC, $iv);
     }
+
     private static function ApplyPKCS7Padding($str, $blockSize){
         $len = strlen($str);
         $paddlen = $blockSize - ($len % $blockSize);
@@ -375,7 +369,7 @@ abstract class ServiceBase extends ServiceAbstract{
         }
         
         return $str . $padding;
-}
+    }
     
     ####### End of encryption support #######
     
@@ -399,9 +393,7 @@ abstract class ServiceBase extends ServiceAbstract{
         					'size' => filesize($tempnam),
         					'type' => $att->mimetype
         				);
-                
-                _debug('attachment: ' . json_encode($files[(string)$file->name]));
-			  }
+              }
 			}
 		}
 		return $files;
@@ -409,9 +401,7 @@ abstract class ServiceBase extends ServiceAbstract{
 	
 	// Factory Pattern
 	public static function Factory($msg){
-		// DEBUG ONLY
-        //_debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-        $logs = Logs::GetInstance();
+		$logs = Logs::GetInstance();
         
         self::SetEmailLog(count($msg->reply_to) ? $msg->reply_to[0]->address : $msg->from[0]->address,
                             $msg->to[0]->address);
@@ -420,14 +410,8 @@ abstract class ServiceBase extends ServiceAbstract{
 		$xml_errors = array();
         $data = self::getMsgData($msg, $cryptoData, $xml_errors, $dataFormat);
         
-        _debug( "data->default = " . $data->__default);
-        
         $files = self::getMsgFiles($msg, $data, $cryptoData);
 		
-        _debug( "file count = " . count($files));
-        
-        // DEBUG ONLY
-        //_debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__ );
         
 		$match;
 		if(preg_match('#^(@|)([-_\w\d]+)(.*)#is', (string)$data->service, $match)){
@@ -449,8 +433,6 @@ abstract class ServiceBase extends ServiceAbstract{
 		$fname = SERVICES_DIR . DS . "@$s_name" . DS . "service.php";
 		$s_name = "Service" . $s_name;
 		
-        // DEBUG ONLY
-        _debug( "Service Name = $s_name; File Name = $fname");
         
 		if (is_file($fname)){
 			include_once($fname);
@@ -465,8 +447,6 @@ abstract class ServiceBase extends ServiceAbstract{
             
             $service->senderMailAddres = $msg->from[0];
             
-            // DEBUG
-            _debug("[OK] Direcciones de usuario y servidor");
             
             if ($cryptoData){
                 $service->encrypted = TRUE;
@@ -474,8 +454,6 @@ abstract class ServiceBase extends ServiceAbstract{
                 $service->sIV = $cryptoData['sIV'];
             }
             
-            // DEBUG
-            _debug("[OK] Cryptodata");
             
             $GLOBALS["data"] = &$data;
             $service->data = &$data;
@@ -484,9 +462,7 @@ abstract class ServiceBase extends ServiceAbstract{
             
 			$service->msgSubject = $msg->subject;
             
-            // DEBUG
-            _debug("[OK] data, file, attachments, subject");
-			
+            
 			// Debugin purposes
 			$txt = $msg->getPlainText();
 			$service->msgBody = $txt;
@@ -496,30 +472,22 @@ abstract class ServiceBase extends ServiceAbstract{
 			}
 			$service->msgBodyDecoded = $txt;
             
-            // DEBUG
-            _debug("[OK] Body and Decoded Body");
-			
+            
 			// Xml Errors
             $service->setComment("[DATA FORMAT]: {$dataFormat}");
 			$service->setComment("[XML_PARSING_ERRORS]");
 			$service->setComment(implode("\r\n", $xml_errors));
             
-            // DEBUG
-            _debug("[OK] Comments");
             
             // Set user app version
             DBHelper::Query("UPDATE users SET app_version='{$service->data->app_version}' WHERE email='{$service->user}'");
             
-            // DEBUG
-            _debug("[OK] User app version. All good in service factory");
 		}else{
             // DEBUG ONLY
-            _debug("El archivo que contiene el servicio no existe.");
+            syslog(LOG_ERR, "El archivo que contiene el servicio no existe.");
         }
         
-        // DEBUG ONLY
-        _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-		
+        
 		return $service;
 	}
 	

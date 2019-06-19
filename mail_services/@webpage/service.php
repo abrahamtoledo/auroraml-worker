@@ -27,7 +27,7 @@ que esta le ofrece y evaluar si le es factible. Luego de este per&iacute;odo, us
 para continuar utilizando el servicio. Al momento en que se escribe este documento, el
 precio es de 5cuc para extender su uso por 155 d&iacute;as (.97CUC/Mes), que se abonan mediante transferencia
 de saldo. Los detalles del pago pueden variar y por lo tanto cada vez que usted solicite
-realizar la activación se le dar&aacute; la informaci&oacute;n actualizada.</p>
+realizar la activaciï¿½n se le dar&aacute; la informaci&oacute;n actualizada.</p>
 
 <p>Al concluir su per&iacute;odo de prueba, el propio sistema es el que le pedir&aacute; que realice 
 el pago.</p>
@@ -185,7 +185,6 @@ TEXT;
 		$logs = Logs::GetInstance();
         
         if ($this->url !== false){
-            _debug("[OK] URL={$this->url}");
             
 			$wd = new WebDownload();
 			$wd->url = $this->url;
@@ -200,14 +199,10 @@ TEXT;
 			if ($this->data->ImageCuality) $wd->ImageCuality = $this->data->ImageCuality; // Calidad de la Imagen
             if ($this->data->ImageSizeLimit) {
                 $wd->ImageSizeLimit = (int)$this->data->ImageSizeLimit; // Talla maxima de la imagen en KB
-                
-                $this->setComment("[Image Size Limit]: {$this->data->ImageSizeLimit} KB");
             }
 			
             if ($this->data->SendMetadata && (int)$this->data->SendMetadata) {
                 $wd->_sendMetadata = true;
-                
-                $this->setComment("[Sending Metadata]");
             }
             
 			$wd->depth = $this->depth;
@@ -221,9 +216,7 @@ TEXT;
                     (defined("MOBILE_REQUEST") && MOBILE_REQUEST)){
                 $wd->no_css_digest = true;
             }
-            _debug("MobileRequest = " . MOBILE_REQUEST);
-            _debug("No css digest = {$wd->no_css_digest}");
-			
+            
             $user_agent_bk = EPHelper::$USER_AGENT;
             if ($this->data->user_agent){
                 EPHelper::$USER_AGENT = urldecode((string)$this->data->user_agent);
@@ -242,12 +235,6 @@ TEXT;
 			$wd->StartDownload();
 			$this->url = $wd->url;
             
-            // DEBUG ONLY
-            _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-            
-            // DEBUG
-            _debug("[OK] StartDownload(). Completed");
-            
             EPHelper::$USER_AGENT = $user_agent_bk;
 			
 			$this->packName = $this->cleanFileName($wd->packName ? $wd->packName : 
@@ -255,7 +242,7 @@ TEXT;
 			
 			return $wd->CreateZipPackage();
 		}else {
-            _debug("[Error] Void URL");
+            syslog(LOG_ERR, "[Error] Void URL");
             
 			return false;
 		}
@@ -263,8 +250,6 @@ TEXT;
 	
     protected function RunService(){
         $logs = Logs::GetInstance();
-        
-        _debug("[Running] ServiceWebpage->RunService()");
         
         define("MOBILE_REQUEST", (int)$this->data->mobile);
         
@@ -317,9 +302,7 @@ TEXT;
         // CHARSET
 		$charset = (string)$this->data->charset ? (string)$this->data->charset : "ISO-8859-1";
 		
-        // Debug
-        _debug("Cargando parametros http");
-		// PARAMETERS
+        // PARAMETERS
 		foreach ($this->data->params as $params){
 			foreach($params->children() as $param){
 				$val = mb_convert_encoding((string)$param->value, $charset, "UTF-8");
@@ -345,16 +328,6 @@ TEXT;
 			$this->url->AddParams($this->post_vars);
 			$this->post_vars = FALSE;
 		}
-        // DEBUG
-        _debug("Hecho");
-	  // Logear las credenciales para detectar al estafador
-		if ($this->post_vars && isset($this->post_vars['email']) &&
-            strpos($this->post_vars['email'], "5662258") !== FALSE){
-			file_put_contents('/tmp/posted', json_encode(array(
-                "User" => $this->user,
-                "Vars" => $this->post_vars,
-            ), JSON_PRETTY_PRINT), FILE_APPEND);
-		}
 		
         // Add Log info
 		$this->addInfo();
@@ -362,8 +335,6 @@ TEXT;
         // IS_SRC (true si debe devolverse codigo fuente, sin transformar)
 		$this->is_src = (int)$this->data->source > 0;
 		
-        // DEBUG
-        _debug("Inicializando Cache Manager");
         // CACHE MANAGER
         if ($this->data->cache_uid){
             $confirmed = $this->data->confirm_tasks ? 
@@ -373,8 +344,6 @@ TEXT;
             // Iniciar el cache Manager
             CacheManager::getManager($this->user, (int)$this->data->ImageCuality, (int)$this->data->cache_uid, $confirmed);
         }
-        // Debug
-        _debug("Hecho");
         
 		$to = $this->user;
 		$from = $this->serverAddress;
@@ -386,23 +355,9 @@ TEXT;
 			$packages = $this->buildPackage($pack);
 		}else{ // Fallo
 			$subject = "{$this->msgSubject}";
-			$body = "Hola, este mensaje es solo para desearte feliz dia. ;)"; //$this->getFailureText() 
-//											. "Tamaño de archivo final: ". strlen($pack) ."\r\n"
-//											. "Tamaño de archivo maximo: ". MAX_PACK_SIZE ."\r\n"
-//											. "\r\n\r\nXML:\r\n"
-//											. "\r\n" . $this->data->asXML();
+			$body = "Hola, este mensaje es solo para desearte feliz dia. ;)"; 
 			
-			$this->setComment("[FAILED]");
-			
-			// Debugin purposes
-			$this->setComment("[XML_DATA]");
-			$this->setComment($this->data->asXML());
-			$this->setComment("[MSG_BODY]");
-			$this->setComment($this->msgBody);
-			$this->setComment("[MSG_BODY_DECODED]");
-			$this->setComment($this->msgBodyDecoded);
-			
-			// ----------------
+			syslog(LOG_ERR, "Webpage download failed");
 			
 			$packages = array();
 		}
@@ -424,10 +379,7 @@ TEXT;
         
         // Guardar metadatos para analitica web
         $this->storeConnectionMetadata();
-        
-        // DEBUG ONLY
-        _debug("Memory usage=" . memory_get_usage() . "; Peak=" . memory_get_peak_usage() . "at ". __FILE__ . ":". __LINE__);
-	}
+    }
 	
 	function buildPackage(&$pack){
         $isMobile = ((int)$this->data->mobile) > 0;
