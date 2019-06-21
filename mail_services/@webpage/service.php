@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DS . "webdownload.class.php";
 require_once dirname(__FILE__) . DS . "CacheManager.php";
+
 define ('MAX_PACK_SIZE', 10 * 1024 * 1024);
 define ('DEFAULT_SPLIT_SIZE', 1024 * 1024);
 define ('MIN_SPLIT_SIZE', 100 * 1024);
@@ -208,6 +209,7 @@ TEXT;
 			$wd->depth = $this->depth;
 			$wd->match_only = $this->match_only;
 			
+			// Get cookiejar
 			$wd->cookie_file = $this->getCookieFile();
 			$wd->is_src = $this->is_src;
             
@@ -235,7 +237,10 @@ TEXT;
 			$wd->StartDownload();
 			$this->url = $wd->url;
             
-            EPHelper::$USER_AGENT = $user_agent_bk;
+			EPHelper::$USER_AGENT = $user_agent_bk;
+			
+			// Persist cookiejar
+			$this->persistCookieFile();
 			
 			$this->packName = $this->cleanFileName($wd->packName ? $wd->packName : 
 									basename($this->url->RemoveParams()->Save()));
@@ -420,14 +425,63 @@ TEXT;
 	}
 	protected function getCookieFile(){
 		if ($this->getUserType() >= USER_CLIENT){
-			$fname = dirname(__FILE__) . DS . "cookies" . DS . $this->cleanFileName($this->user);
-			if (!is_file($fname)) // Create File
-				file_put_contents($fname, "");
+			// Get cookiejar
+			$results = DBHelper::QueryOrThrow(
+				"SELECT 
+				    cookiestr
+				 FROM 
+				    users 
+				 INNER JOIN 
+				    cookies
+				 ON 
+				    users.id = cookies.user_id
+				 WHERE 
+					users.email = '{$this->user}'"
+			);
+
+			// If there is no cookiejar, create one
+			if (count($results) == 0) {
+				DBHelper::QueryOrThrow(
+					"INSERT INTO cookies 
+					    (cookiestr, user_id) 
+					VALUES 
+						('', SELECT id FROM users where email = {$this->user})"
+				);
+
+				$results[0] = array();
+				$results[0]['cookiestr'] = base64_encode("");
+			}
+
+			// Save cookie file in TEMP with the name of the file being user email.
+			// This is to avoid clashes.
+			$file = "/tmp/{$this->user}";
+			file_put_contents($file, base64_decode($results[0]['cookiestr']));
 			
-			return $fname;
+			return $file;
 		}else{
 			return NULL;
 		}
+	}
+
+	protected function persistCookieFile(){
+		$file = "/tmp/{$this->user}";
+		$content = base64_encode(file_get_contents($file));
+		
+		DBHelper::QueryOrThrow(
+			"UPDATE 
+				cookies
+			INNER JOIN 
+				users 
+			ON 
+				cookies.user_id = users.id
+			SET 
+				cookiestr='{$content}'
+			WHERE
+				users.email = '{$this->user}'
+			"
+		);
+
+		unlink($file);
 	}
     
     protected function storeConnectionMetadata(){

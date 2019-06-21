@@ -23,7 +23,7 @@
  	
 	public static function is_email_banned($email){
 		if (!isset(self::$banned_mails)){
-			self::$banned_mails = parse_ini_file(DOCUMENT_ROOT . DS . "config" . DS . "banned.ini", false);
+			self::$banned_mails = parse_ini_file(BANNED_FILE, false);
 			self::$banned_mails = self::$banned_mails['banned'];
 		}
 		

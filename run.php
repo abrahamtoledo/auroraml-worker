@@ -3,11 +3,6 @@ define("DOCUMENT_ROOT", __DIR__);
 require_once __DIR__ . "/includes.php";
 
 
-// Test syslog
-syslog(LOG_ERR, "Test error message");
-syslog(LOG_DEBUG, "Test debug message");
-
-
 function ms_factory($msg){
     $serverAddress = $msg->to[0];
         
