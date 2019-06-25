@@ -11,7 +11,11 @@ LMAX=90
 load=\$(uptime | sed 's/.*average\s*:\s*\(.*\)/\1/g' | sed 's/,\s/ /g' | sed 's/,/./g' | cut -d' ' -f 1)
 cpus=\$(nproc)
 
+<<<<<<< HEAD
 weight=\$(echo \"100-\$load/\$cpus\*100\" | bc -l | cut -d '.' -f1)
+=======
+weight=$(echo \"100-\$load/\$cpus\*100\" | bc -l | cut -d '.' -f1)
+>>>>>>> 057faaeb9278aaef2de19107cde604ca4af4f08b
 [[ \$weight -lt 10 ]] && weight=10
 
 echo \$weight
