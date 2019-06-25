@@ -15,7 +15,7 @@ read_def (){
 ####     Install Prerequisites     ####
 apt install -y rsyslog
 apt install -y apache2 
-apt install -y php7.2 libapache2-mod-php php-mysql php-mbstring php-xml
+apt install -y php7.2 libapache2-mod-php php-mysql php-mbstring php-xml php-curl
 
 a2enmod php7.2
 
@@ -147,6 +147,8 @@ define('AURORA_CONFIG_DIR', '${aurora_etc_dir}');
 define('BANNED_FILE', '${aurora_etc_dir}/banned.ini');
 
 " > "../config/config.php"
+
+. ./cpu-check.sh
 
 systemctl restart rsyslog
 systemctl restart apache2

@@ -791,6 +791,18 @@
 		return $c_res;
 	}
  
+	/**
+	 * Gets a list of url. The downloads are carried in parallel. A list of any size can be passed. 
+	 * The maximum ammount of threads can be specified.
+	 *
+	 * @param array[string] $lurl The list of URL's to be downloaded.
+	 * @param integer $timeout Timeout for every url. This is not a global timeout.
+	 * @param array $transfer_info A list of transfer informations related to every download. See function 'curl_getinfo'
+	 * @param string $cookie_file The path to a cookiejar file to be used for the downloads.
+	 * @param integer $max The maximum ammount of threads. Default is 20.
+	 * @param string $referer The Referer header content.
+	 * @return array[string] A list of strings containing the contents of the responses
+	 */
 	public static function MultiGetUrl($lurl, $timeout = 5, &$transfer_info = NULL, $cookie_file = "", $max = 20, $referer=""){
  		
 		// if (strpos($lurl[0], "s455335975.onlinehome.us") !== false){
