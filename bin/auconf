@@ -1,4 +1,0 @@
-#!/bin/bash
-#echo $1
-
-sed -i "s/^.*$1=.*/$1=$2/" /var/www/vhosts/auroraml.com/httpdocs/config/config.lin.ini

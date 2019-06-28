@@ -1,15 +1,17 @@
 #!/bin/bash
 
-####     Functions    ####
-. ./functions.sh
 
-####     Install Prerequisites     ####
-apt install -y apache2
-
-####    Aurora    ####
 
 aurora_etc_dir="/etc/auroraml"
 test -d "$aurora_etc_dir" || ( mkdir "$aurora_etc_dir" && chmod 755 "$aurora_etc_dir" )
+
+htdocs="/var/www/html"
+
+rm -rf "${htdocs}" 2> /dev/null
+mkdir -p "${htdocs}"
+cp -rT ../www "${htdocs}"
+chown www-data:www-data "${htdocs}" -R
+chmod 755 "${htdocs}" -R
 
 # Direcciones baneadas
 echo '; Lista de direcciones filtradas
@@ -103,10 +105,4 @@ require_once '${aurora_etc_dir}/config.php';
 define('AURORA_CONFIG_DIR', '${aurora_etc_dir}');
 define('BANNED_FILE', '${aurora_etc_dir}/banned.ini');
 
-" > "../config/config.php"
-
-. ./cpu-check.sh
-
-systemctl restart rsyslog
-systemctl restart apache2
-
+" > "${htdocs}/config/config.php"
