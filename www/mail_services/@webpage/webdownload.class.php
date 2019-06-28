@@ -1060,21 +1060,6 @@ HTML;
 		return "";
 	}
 	
-	protected function getAuxHeaders(){
-		$saddr = SERVICE_ADDRESS;
-		$res = <<<HEAD
-		<link rel="stylesheet" href="chrome://catalyst/content/css/jquery-ui-1.7.1.custom.css" media="all" />
-		<link rel="stylesheet" href="chrome://catalyst/content/css/transforms.css" media="all" />
-
-		<script type="text/javascript" src="chrome://catalyst/content/js/jquery-1.3.2.min.js"></script>
-		<script type="text/javascript" src="chrome://catalyst/content/js/jquery-ui-1.7.1.custom.min.js"></script>
-		<script type="text/javascript" src="chrome://catalyst/content/js/transforms.js"></script>
-
-		<meta name="saddr" content="$saddr"/>
-HEAD;
-	return $res;
-	}
-	
 	protected function saveToArchive($webFile){
 		$this->files[$webFile->name] = &$webFile;
 	}

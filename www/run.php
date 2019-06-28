@@ -6,7 +6,7 @@ require_once __DIR__ . "/includes.php";
 function ms_factory($msg){
     $serverAddress = $msg->to[0];
         
-    require_once SERVICES_PATH . "/service_base.php";
+    require_once DOCUMENT_ROOT . "/mail_services/service_base.php";
     return ServiceBase::Factory($msg);
 }
 

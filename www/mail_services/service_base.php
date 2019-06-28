@@ -98,12 +98,12 @@ abstract class ServiceBase extends ServiceAbstract{
         $subdomain = $this->senderMailAddres->user;
 		
         if ($this->data->mobile || 
-            !$this->GetRandomSender("mailninja.ml", $fromName, $fromAddress) || 
+            !$this->GetRandomSender(MAIL_ORIGIN, $fromName, $fromAddress) || 
             ! EPHelper::is_valid_email($fromAddress)){
             
             $fromName = $this->serverAddressName;
-		list ($user, $domain) = explode('@', $this->serverAddress);
-            $fromAddress = "{$user}@mailninja.ml";
+		    list ($user, $domain) = explode('@', $this->serverAddress);
+            $fromAddress = "{$user}@" . MAIL_ORIGIN;
         }
         $msg->AddFrom(sprintf("%s <%s>", $fromName, $fromAddress));
 		

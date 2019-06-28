@@ -256,9 +256,7 @@
     * @param MailMessage El mensaje a enviar
     */
 	public static function SendMailMessage($mailMessage, &$error = "", $config = NULL){
-		$credentials = EPHelper::getRandSmtpAccount();
 		
-
         if ($config == NULL){
             $config = array(
                 'MAIL_IS_SMTP' => MAIL_IS_SMTP,
@@ -266,8 +264,8 @@
                 'SMTP_PORT' => SMTP_PORT,
                 'SMTP_AUTH' => SMTP_AUTH,
                 'SMTP_SSL' => SMTP_SSL,
-                'SMTP_USER' => $credentials->user,
-                'SMTP_PASS' => $credentials->pass
+                'SMTP_USER' => SMTP_USER,
+                'SMTP_PASS' => SMTP_PASS
             );
         }
         
@@ -371,166 +369,15 @@
 	}
  
  	public static function SendMail($to, $subject, $body, $packages = array(), $from = "", $fromName = ""){
- 		$credentials = EPHelper::getRandSmtpAccount();
-		
- 		//require_once DOCUMENT_ROOT . '/common/class.phpmailer.php';
- 		$mail = new phpmailer;
- 		
-		$mail->SMTPDEBUG = 0;
-		
- 		// Configure Mail Connection
- 		if (MAIL_IS_SMTP){
-			$mail->IsSMTP();
-			$mail->Host = SMTP_HOST;
-			$mail->Port = SMTP_PORT;
-			
-			if (SMTP_AUTH){
-				$mail->SMTPAuth = true; 
-				$mail->Username = $credentials->user;
-				$mail->Password = $credentials->pass;
-			}
-			
-			if (SMTP_SSL){
-				$mail->SMTPSecure = "ssl";
-			}
-		}
-		else{
-			$mail->IsMail();
-		}
- 		
- 		// Mail Headers
-		$mail->From = $from != "" ? $from : MAIL_USER . '@' . MAIL_DOMAIN;
-		$mail->FromName = $fromName != "" ? $fromName : MAIL_NAME;
- 		
- 		$mail->AddAddress($to);
- 		$mail->Subject = $subject;
- 		
- 		$mail->IsHTML(true);
- 		// Mail Contents
- 		$mail->AltBody = $body;
- 		
- 		$mail->Body ="
-<html>
-<head>
-  <title>$subject</title>
-  <style type=\"text/css\">
-  	body {
-  	  font-family:Segoe UI, Verdana, Arial;
-  	  color:#333;
-  	  font-size:10pt;
- 	}
- 	
- 	p {
- 	  text-align:justify;
- 	}
-  </style>
-</head>
-<body>
-  <p>" . preg_replace(array('#\${([^}]+)}#', '#{([^}]+)}\$#', '#\$\*{([^}]+)}#', '#\n#'), 
-					array('<${1}>', '</${1}>', '<${1}/>', '<br>'), htmlspecialchars($body)).
- "</p>
-</body>
-</html>
-";
- 		
- 		// Mail Attachments
- 		foreach ($packages as $att){
- 			$mail->AddStringAttachment($att['data'], $att['name'], 'base64');
- 		}
- 		
- 		if ($mail->Send()){
- 			return true;
- 		}else{
- 			return false;
- 		}
+		throw new Exception("NOT SUPPORTED OPERATION", 1);
  	}
 	
 	public static function SendMailHtml($to, $subject, $body, $packages = array(), $from = "", $fromName = ""){
- 		$credentials = EPHelper::getRandSmtpAccount();
-		
- 		require_once DOCUMENT_ROOT . '/common/class.phpmailer.php';
- 		$mail = new phpmailer;
- 		
- 		// Configure Mail Connection
- 		if (MAIL_IS_SMTP){
-			$mail->IsSMTP();
-			$mail->Host = SMTP_HOST;
-			$mail->Port = SMTP_PORT;
-			
-			if (SMTP_AUTH){
-				$mail->SMTPAuth   = true; 
-				$mail->Username = $credentials->user;
-				$mail->Password = $credentials->pass;
-			}
-			
-			if (SMTP_SSL){
-				$mail->SMTPSecure = "ssl";
-			}
-		}
-		else{
-			$mail->IsMail();
-		}
- 		
- 		// Mail Headers
- 		$mail->From = "rev@elpuent.com";
- 		$mail->FromName = 'El Puente - Services';
-		
-		if ($from != "") $mail->From = $from;
-		if ($fromName != "") $mail->FromName = $fromName;
- 		
- 		$mail->AddAddress($to);
- 		$mail->Subject = $subject;
- 		
- 		$mail->IsHTML(true);
- 		// Mail Contents
- 		$mail->AltBody = "Por favor, abra la version HTML de este mensaje";
- 		
- 		$mail->Body = $body;
- 		
- 		// Mail Attachments
- 		foreach ($packages as $att){
- 			$mail->AddStringAttachment($att['data'], $att['name'], 'base64');
- 		}
- 		
- 		if ($mail->Send()){
- 			return true;
- 		}else{
- 			return false;
- 		}
+		throw new Exception("NOT SUPPORTED OPERATION", 1);
  	}
  
  	public static function SendFormatedMail($to, $subject, $template, $params=array(), $packdata = '', $packname = ''){
- 		if (!file_exists(HTML_ROOT . '/tmpl_' . $template . '.txt')){
- 			$keys = array();
- 			foreach ($params as $key => $value) $keys[] = '${' .$key. '}';
- 			file_put_contents(HTML_ROOT . '/tmpl_' . $template . '.txt',
- 									"New Template tmpl_{$template}.txt\r\n Implements : ". implode(', ',$keys));
- 		}
- 		$body = file_get_contents(HTML_ROOT . '/tmpl_' . $template . '.txt');
- 		
- 		if (count($params) > 0){
- 			$search = array(); $replaces = array();
- 			foreach ($params as $key => $value){
- 				$search[] = '${' . $key . '}';
- 				$replaces[] = $value;
- 			}
- 			
- 			$body = str_replace($search, $replaces, $body);
- 		}
- 		
- 		$packages = array();
- 		if ($packdata != ''){
- 			$packages[0]['data'] = $packdata;
- 		
- 			if ($packname != ''){
- 				$packages[0]['name'] = $packname;
- 			}
- 			else{
- 				$packages[0]['name'] = 'archive.zip';
- 			}
- 		}
- 		
- 		return EPHelper::SendMail($to, $subject, $body, $packages);
+		throw new Exception("NOT SUPPORTED OPERATION", 1);
  	}
  	
     /**
