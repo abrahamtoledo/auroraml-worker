@@ -445,7 +445,7 @@ TEXT;
 					"INSERT INTO cookies 
 					    (cookiestr, user_id) 
 					VALUES 
-						('', SELECT id FROM users where email = {$this->user})"
+						('', SELECT id FROM users where email = '{$this->user}')"
 				);
 
 				$results[0] = array();
