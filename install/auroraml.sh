@@ -66,7 +66,7 @@ define('SMTP_SSL', 0);
 
 define('SMTP_DEBUG', 0);
 
-define('MAIL_ORIGIN', $(read_def "MAIL ORIGIN" "auroraml.net"));
+define('MAIL_ORIGIN', '$(read_def "MAIL ORIGIN" "auroraml.net")');
 
 // Misc
 define('_DEBUG_', 0);

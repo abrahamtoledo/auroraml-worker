@@ -105,6 +105,9 @@ abstract class ServiceBase extends ServiceAbstract{
 		    list ($user, $domain) = explode('@', $this->serverAddress);
             $fromAddress = "{$user}@" . MAIL_ORIGIN;
         }
+
+        syslog(LOG_DEBUG, "Message From: " . sprintf("%s <%s>", $fromName, $fromAddress));
+        
         $msg->AddFrom(sprintf("%s <%s>", $fromName, $fromAddress));
 		
 		$msg->isHtml = false;
