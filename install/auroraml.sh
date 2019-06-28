@@ -99,6 +99,7 @@ define('SMS_SERVICES_PATH', DOCUMENT_ROOT . DS .'sms_service');
 " > "${aurora_etc_dir}/config.php"
 
 # Importar la configuracion en AuroraSuite
+mkdir -p "${htdocs}/config"
 echo "<?php
 require_once '${aurora_etc_dir}/config.php';
 
