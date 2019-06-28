@@ -1,7 +1,9 @@
 #!/bin/bash
 
-apt --reinstall install -y php7.2 libapache2-mod-php php-mysql php-mbstring php-xml php-curl
-a2enmod -q php7.2 2> /dev/null
+apt --reinstall install -y php libapache2-mod-php php-mysql php-mbstring php-xml php-curl
+
+phpver=$( php --version | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2 )
+a2enmod -q "php${phpver}" 2> /dev/null
 
 echo '; PHP directives for AuroraML - Worker.
 [Auroraml]
