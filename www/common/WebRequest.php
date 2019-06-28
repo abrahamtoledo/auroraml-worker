@@ -28,10 +28,10 @@
   */
 class WebRequest
 {
-    public const DATA_URLENCODED = 0;
-    public const DATA_MULTIPART = 1;
-    public const DATA_JSON = 2;
-    public const DATA_RAW = 3;
+    const DATA_URLENCODED = 0;
+    const DATA_MULTIPART = 1;
+    const DATA_JSON = 2;
+    const DATA_RAW = 3;
 
     /**
      * The url to fetch
