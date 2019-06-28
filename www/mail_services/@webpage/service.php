@@ -443,9 +443,8 @@ TEXT;
 			if (count($results) == 0) {
 				DBHelper::QueryOrThrow(
 					"INSERT INTO cookies 
-					    (cookiestr, user_id) 
-					VALUES 
-						('', SELECT id FROM users where email = '{$this->user}')"
+					    (cookiestr, user_id)
+						SELECT '', id FROM users where email = '{$this->user}' LIMIT 1"
 				);
 
 				$results[0] = array();
