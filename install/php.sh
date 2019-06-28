@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt --reinstall install -y php7.0 libapache2-mod-php php-mysql php-mbstring php-xml php-curl php-mcrypt
+apt --reinstall install -y php7.0 libapache2-mod-php php-mysql php-mbstring php-xml php-curl php-mcrypt php-gd
 
 phpver=$( php --version | head -n 1 | cut -d " " -f 2 | cut -d "." -f 1,2 )
 a2enmod -q "php${phpver}" 2> /dev/null
