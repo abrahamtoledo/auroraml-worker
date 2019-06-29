@@ -665,7 +665,7 @@ HTML;
 		$webFile->content = $dom->Save();
 		$dom->clear();
 
-		syslog(LOG_INFO, "END DIGEST HTML: url={$webFile->url}");
+		syslog(LOG_INFO, "END DIGEST.");
 	}
 	protected function digestCSS($webFile){
 		$this->tryResolveFileName($webFile, "", "css");
