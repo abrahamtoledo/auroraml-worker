@@ -6,7 +6,6 @@ define ('UTF16_BIG_ENDIAN_BOM'   , chr(0xFE) . chr(0xFF));
 define ('UTF16_LITTLE_ENDIAN_BOM', chr(0xFF) . chr(0xFE));
 define ('UTF8_BOM'               , chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-define('WEBPAGE_TIMEOUT', 30);
 define('WEBPAGE_DIR', dirname(__FILE__));
 
 require_once WEBPAGE_DIR . DS . "RequestHandler.php";
@@ -667,6 +666,7 @@ HTML;
 
 		syslog(LOG_INFO, "END DIGEST.");
 	}
+
 	protected function digestCSS($webFile){
 		$this->tryResolveFileName($webFile, "", "css");
 		

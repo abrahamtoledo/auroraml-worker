@@ -68,9 +68,13 @@ define('SMTP_DEBUG', 0);
 
 define('MAIL_ORIGIN', '$(read_def "MAIL ORIGIN" "auroraml.net")');
 
+// Timeouts
+define('WEBPAGE_TIMEOUT', 5);
+define('WEBPAGE_DEPS_TIMEOUT', 1);
+define('MAX_SIMULTANEOUS_REQUEST', 30);
+
 // Misc
 define('_DEBUG_', 0);
-
 define('DIAS_PRUEBA', 7);
 
 // Version Minima de AuroraSuite para nuevos usuarios

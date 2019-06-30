@@ -1,7 +1,5 @@
 <?php
 abstract class RequestHandler{
-    const MAX_SIMULTANEOUS_REQUEST = 10;
-    
     /** @var webFile */
 	var $webFile = NULL;
 	var $cookieFile = NULL;
@@ -103,7 +101,7 @@ abstract class RequestHandler{
                 $logs->addEntry("[Running] EPHelper::MultiGetUrl()");
             }
             
-            $contents = @EPHelper::MultiGetUrl($lUrl, WEBPAGE_TIMEOUT, $tInfo, $cookieFile, self::MAX_SIMULTANEOUS_REQUEST, $referer);
+            $contents = @EPHelper::MultiGetUrl($lUrl, WEBPAGE_DEPS_TIMEOUT, $tInfo, $cookieFile, MAX_SIMULTANEOUS_REQUEST, $referer);
             
             $c = count($lUrl);
             for($i = 0; $i < $c; $i++){

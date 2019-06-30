@@ -425,7 +425,7 @@
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 15);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		//curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2);
 		
 		if (is_file($cookie_file)){
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
@@ -532,7 +532,8 @@
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 15);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		
+
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2);
 		//curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
  		
 		if (is_file($cookie_file)){
@@ -596,6 +597,8 @@
  			curl_setopt($ch[$i], CURLOPT_TIMEOUT, $timeout);
 			curl_setopt($ch[$i], CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch[$i], CURLOPT_MAXREDIRS, 5);
+
+			curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2);
 			
 			if ($cookie_file_exists){
 				curl_setopt($ch[$i], CURLOPT_COOKIEJAR, $cookie_file);
