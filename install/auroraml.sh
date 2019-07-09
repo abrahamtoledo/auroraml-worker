@@ -70,7 +70,7 @@ define('MAIL_ORIGIN', '$(read_def "MAIL ORIGIN" "auroraml.net")');
 
 // Timeouts
 define('WEBPAGE_TIMEOUT', 5);
-define('WEBPAGE_DEPS_TIMEOUT', 1);
+define('WEBPAGE_DEPS_TIMEOUT', 3);
 define('MAX_SIMULTANEOUS_REQUEST', 30);
 
 // Misc

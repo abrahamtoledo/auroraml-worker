@@ -14,5 +14,6 @@ foreach(glob(DOCUMENT_ROOT . '/common/*.php') as $common){
 	require_once ($common);
 }
 
+$logId = rand(0, 1000000);
 // Syslog Preparation
-openlog("auroraml-worker", LOG_ODELAY, LOG_LOCAL0);
+openlog("auroraml-worker[$logId]", LOG_ODELAY, LOG_LOCAL0);
