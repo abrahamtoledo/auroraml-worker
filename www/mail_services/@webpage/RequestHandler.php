@@ -22,18 +22,19 @@ abstract class RequestHandler{
 		$requestHandler = new DefaultRequestHandler;
 		
         // Google Search, javascript fix
-        if ( stripos($webFile->url->host, ".google.") !== FALSE){
+        if ( $webFile->url && stripos($webFile->url->host, ".google.") !== FALSE){
             $requestHandler = new GoogleSearchHandler();
         }
         // Dv Lottery Fix
-        elseif (strcasecmp($webFile->url->host, "www.dvlottery.state.gov") == 0){
+        elseif ($webFile->url && strcasecmp($webFile->url->host, "www.dvlottery.state.gov") == 0){
             $requestHandler = new DvLotteryHandler();
         }
         // Facebook Fix
-        elseif(($webFile->url->host == "www.facebook.com") || 
+        elseif($webFile->url && 
+                (($webFile->url->host == "www.facebook.com") || 
                 ($webFile->url->host == "facebook.com") || 
                 ($webFile->url->host == "lm.facebook.com") || 
-                ($webFile->url->host == "fb.com")){
+                ($webFile->url->host == "fb.com"))){
             $requestHandler = new FacebookRequestHandler();
         }
         // Insertar Revolico Fix
