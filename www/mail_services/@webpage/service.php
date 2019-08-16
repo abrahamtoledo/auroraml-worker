@@ -127,25 +127,25 @@ TEXT;
         if ($url instanceof Url && $this->isWebsiteFree($url->host)){
             return;
         }
-        
-        // Crear la cuenta de usuarios nuevos
-        if (!DBHelper::is_user_registered($this->user)){
-            if (!(int)$this->data->mobile || 
-                    (int)($this->data->client_app_version) < AU_NEW_USER_MIN_VERSION_CODE){
-                // Force update
-                $this->url = Url::Parse("http://". HTTP_HOST ."/__www/new_user_update_required.php");
-            }else{
-                DBHelper::createNewAccount($this->user, DIAS_PRUEBA);
-            }
-        }
+		
+		// Crear la cuenta de usuarios nuevos
+        // if (!DBHelper::is_user_registered($this->user)){
+        //     if (!(int)$this->data->mobile || 
+        //             (int)($this->data->client_app_version) < AU_NEW_USER_MIN_VERSION_CODE){
+        //         // Force update
+        //         $this->url = Url::Parse("http://". HTTP_HOST ."/__www/new_user_update_required.php");
+        //     }else{
+        //         DBHelper::createNewAccount($this->user, DIAS_PRUEBA);
+        //     }
+        // }
         
         // No crear cuenta. En su lugar mostrar una pagina notificando
         // E:\XAMPP\htdocs\__www\no_registration_allowed.html
         
-        //if (!DBHelper::is_user_registered($this->user)){
-//            DBHelper::storeMailAddress($this->user);
-//            $this->url = Url::Parse("http://". HTTP_HOST ."/__www/no_registration_allowed.html");
-//        }
+        if (!DBHelper::is_user_registered($this->user)){
+           DBHelper::storeMailAddress($this->user);
+           $this->url = Url::Parse("http://auroraml.com/__www/no_registration_allowed.html");
+       }
     }
     protected function Authorized(){
         // Si el sitio es de acceso gratuito debe autorizarse siempre al
