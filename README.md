@@ -3,6 +3,7 @@ Worker servers for AuroraSuite. A worker server receives incomming requests from
 process it and reply to the client
 
 __IMPORTANT NOTE: This document is not completed. Work in progress__
+Contact me if you encounter any problem with installation. All contributions are welcome.
 
 ## Prerequisites
 You must have:
