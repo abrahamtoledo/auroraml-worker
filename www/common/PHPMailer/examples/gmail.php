@@ -46,7 +46,7 @@ $mail->Username = "liz960915@gmail.com";
 $mail->Password = "isaburuma1002";
 
 //Set who the message is to be sent from
-$mail->setFrom('liz960915@gmail.com', 'Abraham Toledo');
+$mail->setFrom('liz960915@gmail.com', '');
 
 //Set an alternative reply-to address
 //$mail->addReplyTo('replyto@example.com', 'First Last');

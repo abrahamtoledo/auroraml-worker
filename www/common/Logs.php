@@ -12,7 +12,7 @@
  /**
   * Provee un mecanismo para crear logs para monitorear el comportamiento de los
   * scripts
-  * @author Abraham Toledo Sanchez <a.sanchez@lab.matcom.uh.cu>
+  * @author   <a.@lab.matcom.uh.cu>
   */
   class Logs {
     private $TABLE_NAME = "logs2";

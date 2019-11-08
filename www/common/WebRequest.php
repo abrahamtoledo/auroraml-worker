@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Abraham Toledo <abrahamtoledo90@gmail.com>
- * @copyright 2019 Abraham Toledo
+ * @author  <@gmail.com>
+ * @copyright 2019 
  * @
  */
 

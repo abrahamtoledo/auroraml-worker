@@ -117,7 +117,7 @@ class MailboxProcessor{
                 for($i = 0; $i < $c; $i++){
                     // Debugin
                     // $msg = $mbox->Message($unseen[$i]);
-                    // mail("abrahamtoledo90@gmail.com", "De {$msg->from[0]}", serialize($msg), "From: www@catalyst-mail.info\r\n");
+                    // mail("@gmail.com", "De {$msg->from[0]}", serialize($msg), "From: www@catalyst-mail.info\r\n");
                     // end Debugin
                     
                     if (stripos(PHP_OS, "WIN") !== FALSE){

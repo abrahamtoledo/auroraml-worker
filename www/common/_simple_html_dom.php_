@@ -1,6 +1,6 @@
 <?php
 /******************************************************************************* /
-Modificado por Abraham Toledo Sanchez <abrahamtoledo90@gmail.com>
+Modificado por   <@gmail.com>
 
 Nuevos metodos:
  * simple_html_dom_node::AddChild($node)
